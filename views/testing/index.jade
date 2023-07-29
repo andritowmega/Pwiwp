@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+  h1 Testing Table
+  p List values
+    -if(data){
+        ul 
+            each singleValue in data
+                li #{singleValue.name}
+    -}else{
+        No Hay valores
+    -}
+        
+    
