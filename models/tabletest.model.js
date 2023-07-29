@@ -26,7 +26,7 @@ module.exports = {
             "SELECT * FROM tabletest"
           )
           .catch((err) => {
-            console.error("MODEL BOOK: Can not get all", err);
+            console.error("MODEL TABLE TEST: Can not get all", err);
             return null;
           });
         connection.end();

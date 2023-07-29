@@ -1,14 +1,20 @@
 extends ../layout
 
 block content
-  h1 Testing Table
-  p List values
-    -if(data){
-        ul 
-            each singleValue in data
-                li #{singleValue.name}
-    -}else{
-        No Hay valores
-    -}
-        
-    
+    h1 Testing Table
+    p List values unsa
+        -if(data){
+            ul 
+                each singleValue in data
+                    li #{singleValue.name}
+        -}else{
+            No Hay valores
+        -}
+    p Inicio sesion
+        -if(data){
+            ul 
+                each singleSession in session
+                    li #{singleSession.email} - #{singleSession.password}
+        -}else{
+            No Hay valores
+        -}
