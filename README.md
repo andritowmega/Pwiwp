@@ -27,6 +27,6 @@ In this project, we follow the following programming styles:
 
 - Variables and Function Naming: We use `camelCase` style for variables and function names. For example, `userModel`, `getUserById`.
 
-- Route URLs: We use `kebab-case` style for route URLs in Express. For example, `/api/user-profile/:id`.
+- Route URLs: We use `kebab-case` style for route URLs in Express. For example, `/user/`.
 
 By following these styles, we aim to maintain code consistency and readability throughout the project.
