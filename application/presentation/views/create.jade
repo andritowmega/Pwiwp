@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1= UserCreate
+  -if(data){
+    p Usuario Creado
+  -}else{
+    p No se pudo crear el usuario
+  -}
