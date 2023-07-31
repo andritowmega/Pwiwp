@@ -1,5 +1,11 @@
 extends ../layout
 
 block content
-  h1= title
-  p Social Network
+  .row.mt-5 
+    .col-md-3 
+        include ../includes/profile
+        include ../includes/friends
+    .col-md-6.text-center 
+        include ../includes/publications
+    .col-md-3 
+        include ../includes/notifications

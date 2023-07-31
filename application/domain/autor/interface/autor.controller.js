@@ -3,6 +3,9 @@ class AutorController {
     res.render("autor/index",);
   }
   static async Login(req, res) {
+    res.render("autor/login",);
+  }
+  static async LoginTest(req, res) {
     const userService = require("../../services/user.service");
     const data = await userService.CreateUser(req.body).catch((e) => {
       console.error("USER CONTROLLER: cant not create user");
