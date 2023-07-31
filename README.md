@@ -20,3 +20,13 @@ The login service has been created to handle user authentication and related fun
 The user controller has been added to manage user-related interactions with the system. It includes the following function:
 - `userCreate(req, res)`: This function is responsible for handling HTTP requests related to user creation. It takes the request (`req`) and response (`res`) objects as inputs and utilizes the login service's `createUser` function to create a new user.
 
+## Programming Styles
+In this project, we follow the following programming styles:
+
+- Class Naming and Controllers: We use `PascalCase` style for class names and controllers. For example, `UserController`, `UserProfileController`.
+
+- Variables and Function Naming: We use `camelCase` style for variables and function names. For example, `userModel`, `getUserById`.
+
+- Route URLs: We use `kebab-case` style for route URLs in Express. For example, `/api/user-profile/:id`.
+
+By following these styles, we aim to maintain code consistency and readability throughout the project.
