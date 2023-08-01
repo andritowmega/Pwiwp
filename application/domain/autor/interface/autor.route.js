@@ -8,4 +8,5 @@ router.get('/register', AutorController.Register);
 
 //apis
 router.post('/api/register', AutorController.RegisterAccount);
+router.post('/api/login', AutorController.Login);
 module.exports = router;

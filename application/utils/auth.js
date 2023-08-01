@@ -4,11 +4,12 @@ const moment = require("moment");
 const keypass = 30; //cuantos digitos aumentar al token
 
 module.exports = {
-  newTokenUser: async function (user, infouser) {
+  newTokenUser: async function (user) {
     const payload = {
-      idprofile: user.idprofile,
-      emailprofile: user.email,
-      fullname: infouser.names + " " + infouser.surnames,
+      idprofile: user.user_id,
+      name: user.firstname + " " + user.lastname,
+      email: user.email,
+      nickname: user.nickname,
       exp: moment().add(180, "days").unix(),
     };
     return jwt.sign(payload, configtoken.TOKEN_SECRET_USER);

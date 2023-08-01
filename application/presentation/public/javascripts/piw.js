@@ -1,3 +1,44 @@
+async function login() {
+  Swal.fire({
+    icon: "info",
+    text: "cargando ...",
+  });
+  const response = await easyFetch.fetchData(
+    "/api/login",
+    {
+      email: "login-email",
+      password: "login-password",
+    },
+    "POST",
+    true
+  );
+  if (response && response.status && response.status == "ok") {
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: response.msg,
+      showConfirmButton: false,
+      timer: 2500,
+    });
+    easyFetch.setCookie("dpwi", response.data.token, (path = "/"));
+    setTimeout(() => {
+      location.replace("/");
+    }, 2000);
+  }else{
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: "Usuario o contraseña incorrecta",
+      showConfirmButton: false,
+      timer: 2500,
+    });
+  }
+}
+function closeSession(){
+  easyFetch.setCookie("dpwi", "", (path = "/"));
+  location.replace("/");
+
+}
 async function register() {
   let password = easyFetch.getById("register-password");
   let rpassword = easyFetch.getById("register-rpassword");
@@ -29,13 +70,18 @@ async function register() {
       return null;
     });
   if (response && response.status && response.status == "ok") {
-    return Swal.fire({
+    Swal.fire({
       position: "top-end",
       icon: "success",
       title: response.msg,
       showConfirmButton: false,
       timer: 2500,
     });
+    setTimeout(() => {
+      location.replace("/");
+    }, 2000);
+
+    return;
   }
   return Swal.fire({
     position: "top-end",

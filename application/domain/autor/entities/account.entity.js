@@ -2,6 +2,8 @@ const connectionDb = require("../../../config/dbconnections");
 module.exports = {
   async create({ email, password, user_id, nickname }) {
     return new Promise(async (resolve, reject) => {
+      const bcrypt = require("bcryptjs");
+      password = bcrypt.hashSync(password, 8);
       const connection = connectionDb();
       const data = await connection
         .query(
@@ -23,7 +25,7 @@ module.exports = {
       const connection = connectionDb();
       const data = await connection
         .query(
-          "SEELCT * FROM account WHERE email = $1",[email]
+          "SELECT a.email,a.password,a.user_id,a.nickname FROM account a INNER JOIN userinfo u ON a.user_id = u.id WHERE a.email = $1",[email]
         )
         .catch((err) => {
           console.error("MODEL Account: Can not get By Email", err);
