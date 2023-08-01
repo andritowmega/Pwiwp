@@ -1,20 +1,28 @@
 class AutorController {
   static async Index(req, res) {
-    res.render("autor/index",);
+    res.render("autor/index");
   }
-  static async Login(req, res) {
-    res.render("autor/login",);
+  static async Register(req, res) {
+    res.render("autor/register");
   }
-  static async LoginTest(req, res) {
-    const userService = require("../../services/user.service");
-    const data = await userService.CreateUser(req.body).catch((e) => {
+  static async RegisterAccount(req, res) {
+    const AutorService = require("../services/autor.service");
+    const data = await AutorService.AccountProfile(req.body).catch((e) => {
       console.error("USER CONTROLLER: cant not create user");
       return null;
     });
     if (data) {
-      res.render("create", { data: data });
+      return res.json({
+        status: "ok",
+        msg: "Registro correcto, puede iniciar sesión",
+        data: null,
+      });
     } else {
-      res.render("create", { data: null });
+      return res.json({
+        status: "error",
+        msg: "Error al registrarse, algún dato ya es repetido",
+        data: null,
+      });
     }
   }
 }
