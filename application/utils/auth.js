@@ -6,7 +6,7 @@ const keypass = 30; //cuantos digitos aumentar al token
 module.exports = {
   newTokenUser: async function (user) {
     const payload = {
-      idprofile: user.user_id,
+      id: user.user_id,
       name: user.firstname + " " + user.lastname,
       email: user.email,
       nickname: user.nickname,
@@ -89,6 +89,42 @@ module.exports = {
         if (err) {
           console.error("Error for validating user token", err.name);
           return res.render("autor/login",);
+        } else {
+          req.datatoken = decoded;
+          return next();
+        }
+      }
+    );
+  },
+  middlewareUserApi: async function (req, res, next) {
+    //console.log("req.cookies",req.cookies)
+    let tokenBrowser =
+      req.body.token ||
+      req.query.token ||
+      req.headers["authorization"] ||
+      req.cookies.token ||
+      req.cookies.dpwi;
+
+    if (!tokenBrowser)
+      return res.render("autor/login",);
+    const JWT = require("jsonwebtoken");
+    const configToken = require("../config/token");
+    const bearerHeader = req.headers["authorization"];
+
+    if (typeof bearerHeader !== "undefined")
+      tokenBrowser = bearerHeader.split(" ")[1];
+
+    JWT.verify(
+      tokenBrowser,
+      configToken.TOKEN_SECRET_USER,
+      async (err, decoded) => {
+        if (err) {
+          console.error("Error for validating user token", err.name);
+          return res.json({
+            status:"error",
+            msg:"Inicie sesión",
+            data:null
+          });
         } else {
           req.datatoken = decoded;
           return next();

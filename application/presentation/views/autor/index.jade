@@ -5,7 +5,11 @@ block content
     .col-md-3 
         include ../includes/profile
         include ../includes/friends
-    .col-md-6.text-center 
-        include ../includes/publications
-    .col-md-3 
         include ../includes/notifications
+    .col-md-9.text-center 
+        include ../includes/publications
+    script.
+      window.addEventListener('load', function() {
+        getPublications();
+      });
+        

@@ -1,25 +1,19 @@
-.profile.py-3 
-    .row.mt-2
-        .col-md-12.text-center.border.rounded-3 
-            b Andres Carrasco Quispe - 27/07/2023
-            p Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia accusantium aspernatur eum sit nostrum voluptatem, dolores repellendus quaerat magni sapiente, laborum, ab adipisci. Rem inventore, tenetur expedita debitis delectus nesciunt!
-    .row.mt-2
-        .col-md-12.text-center.border.rounded-3 
-            b Andres Carrasco Quispe - 27/07/2023
-            p Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia accusantium aspernatur eum sit nostrum voluptatem, dolores repellendus quaerat magni sapiente, laborum, ab adipisci. Rem inventore, tenetur expedita debitis delectus nesciunt!
-    .row.mt-2
-        .col-md-12.text-center.border.rounded-3 
-            b Andres Carrasco Quispe - 27/07/2023
-            p Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia accusantium aspernatur eum sit nostrum voluptatem, dolores repellendus quaerat magni sapiente, laborum, ab adipisci. Rem inventore, tenetur expedita debitis delectus nesciunt!
-    .row.mt-2
-        .col-md-12.text-center.border.rounded-3 
-            b Andres Carrasco Quispe - 27/07/2023
-            p Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia accusantium aspernatur eum sit nostrum voluptatem, dolores repellendus quaerat magni sapiente, laborum, ab adipisci. Rem inventore, tenetur expedita debitis delectus nesciunt!
-     .row.mt-2
-        .col-md-12.text-center.border.rounded-3 
-            b Andres Carrasco Quispe - 27/07/2023
-            p Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia accusantium aspernatur eum sit nostrum voluptatem, dolores repellendus quaerat magni sapiente, laborum, ab adipisci. Rem inventore, tenetur expedita debitis delectus nesciunt!
-     .row.mt-2
-        .col-md-12.text-center.border.rounded-3 
-            b Andres Carrasco Quispe - 27/07/2023
-            p Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia accusantium aspernatur eum sit nostrum voluptatem, dolores repellendus quaerat magni sapiente, laborum, ab adipisci. Rem inventore, tenetur expedita debitis delectus nesciunt!
+.profile
+    .row 
+        .col-md-12.text-center
+            .alert.alert-dark(role='alert')
+                .input-group
+                    textarea.form-control(aria-label='With textarea' placeholder="Publicar algo" id="publication-content")
+                    button.btn.btn-outline-secondary(type='button' onclick="publish()") Publicar
+    .row 
+        .col#publications
+            -for(let i=0;i<10;i++){
+                .row.mt-2
+                    .col-md-12.text-center.border.rounded-3.placeholder-glow 
+                        span.placeholder.col-7
+                        span.placeholder.col-4
+                        span.placeholder.col-4
+                        span.placeholder.col-6
+                        span.placeholder.col-8
+
+            -}

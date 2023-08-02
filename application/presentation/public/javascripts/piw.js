@@ -91,3 +91,49 @@ async function register() {
     timer: 2500,
   });
 }
+
+async function publish(){
+  const contentPublication = easyFetch.getById("publication-content");
+  if(contentPublication.value==""){
+    return Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: "Debes agregar contenido a tu publicación",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+  Swal.fire({
+    icon: "info",
+    text: "registrando ...",
+  });
+  const response = await easyFetch.fetchData("/feed/api/publication/push",{
+    content: "publication-content"
+  },"POST",true).catch(e=>{
+    console.error("Error Fetching Publish",e)
+    return null;
+  })
+  if(response && response.status && response.status=="ok"){
+    return Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: response.msg,
+      showConfirmButton: false,
+      timer: 1000,
+    });
+  }
+  return Swal.fire({
+    position: "top-end",
+    icon: "error",
+    title: "No se pudo publicar el post",
+    showConfirmButton: false,
+    timer: 1000,
+  });
+}
+async function getPublications(){
+  const response = await easyFetch.fetchData("/feed/api/publication/getall",{},"POST",false).catch(e=>{
+    console.error("Error Fetching Publish",e)
+    return null;
+  })
+  console.log("response",response);
+}
