@@ -18,11 +18,11 @@ module.exports = {
       return reject(null);
     });
   },
-  async getPublicationById(id) {
+  async getPublicationById({id}) {
     return new Promise(async (resolve, reject) => {
       const connection = connectionDb();
       const data = await connection
-        .query("SELECT * FROM publication WHERE id = $1", [id])
+        .query("SELECT p.*,u.firstname,u.lastname FROM publication p INNER JOIN userinfo u ON p.user_id = u.id WHERE p.id = $1", [id])
         .catch((err) => {
           console.error("MODEL Publication: Can not get By Id", err);
           return null;
