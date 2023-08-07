@@ -19,17 +19,20 @@ module.exports = {
     });
   },
   async getPublicationById({id}) {
+    console.log("id",id)
     return new Promise(async (resolve, reject) => {
       const connection = connectionDb();
       const data = await connection
-        .query("SELECT p.*,u.firstname,u.lastname FROM publication p INNER JOIN userinfo u ON p.user_id = u.id WHERE p.id = $1", [id])
+        .query("SELECT p.*,u.firstname,u.lastname,a.nickname FROM publication p INNER JOIN userinfo u ON p.user_id = u.id INNER JOIN account a ON p.user_id = a.user_id WHERE p.id = $1", [id])
         .catch((err) => {
           console.error("MODEL Publication: Can not get By Id", err);
           return null;
         });
       connection.end();
-      if (data && data.rows && data.rows.length > 0)
+      if (data && data.rows && data.rows.length > 0){
         return resolve(data.rows[0]);
+      }
+        
       return reject(null);
     });
   },
@@ -37,7 +40,7 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       const connection = connectionDb();
       const data = await connection
-        .query("SELECT * FROM publication p INNER JOIN userinfo u ON p.user_id = u.id WHERE p.user_id = $1 ORDER BY p.id DESC", [id])
+        .query("SELECT p.*,u.firstname,u.lastname FROM publication p INNER JOIN userinfo u ON p.user_id = u.id WHERE p.user_id = $1 ORDER BY p.id DESC", [id])
         .catch((err) => {
           console.error("MODEL Publication: Can not get By User id", err);
           return null;
@@ -52,7 +55,7 @@ module.exports = {
       const connection = connectionDb();
       const data = await connection
         .query(
-          "SELECT * FROM publication p INNER JOIN userinfo u ON p.user_id = u.id ORDER BY p.id DESC"
+          "SELECT p.*,u.firstname,u.lastname FROM publication p INNER JOIN userinfo u ON p.user_id = u.id ORDER BY p.id DESC"
         )
         .catch((err) => {
           console.error("MODEL Publication: Can not get By User id", err);

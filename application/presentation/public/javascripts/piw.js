@@ -138,18 +138,18 @@ async function publish() {
     timer: 1000,
   });
 }
-async function getPublications(id=null) {
+async function getPublications(id = null) {
   publicationPlaceHolder(true);
   let publications = easyFetch.getById("publications");
   let uri = "";
-  if(id==null){
+  if (id == null) {
     uri = "/feed/api/publication/getall";
-  } else if(id=="my"){
+  } else if (id == "my") {
     uri = "/feed/api/my/publication/getall";
   } else {
-    uri = "/feed/api/"+id+"/publication/getall";
+    uri = "/feed/api/" + id + "/publication/getall";
   }
-  
+
   const response = await easyFetch
     .fetchData(uri, {}, "POST", false)
     .catch((e) => {
@@ -173,9 +173,25 @@ async function getPublications(id=null) {
           <hr/>
           <div class="row">
             <div class="col-md-12 text-justify">
-              ${response.data[i].content}
+              <div class="row">
+                <div class="col">
+                  ${response.data[i].content}
+                </div>
+              </div>
+              <div class="row"> 
+                  <div class="col"> 
+                      <hr/>
+                  </div>
+              </div>
+              <div class="row"> 
+                  <div class="col"> 
+                      <a href="/feed/post/${
+                        response.data[i].id
+                      }"> Comentarios </a>
+                  </div>
             </div>
           </div>
+
         </div> 
       </div>
       `;
@@ -214,17 +230,14 @@ async function publishComment(id) {
       timer: 1500,
     });
   }
-  Swal.fire({
-    icon: "info",
-    text: "publicando ...",
-  });
+  commentsPlaceHolder();
   //publicationPlaceHolder(true);
   const response = await easyFetch
     .fetchData(
       "/feed/api/post/comments/create",
       {
         content: "comment-content",
-        id:id,
+        id: id,
       },
       "POST",
       true
@@ -234,79 +247,68 @@ async function publishComment(id) {
       return null;
     });
   if (response && response.status && response.status == "ok") {
-    //getPublications();
-    return Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: response.msg,
-      showConfirmButton: false,
-      timer: 1000,
-    });
+    getComments(id);
+    return;
   }
   return Swal.fire({
     position: "top-end",
     icon: "error",
-    title: "No se pudo publicar el post",
+    title: "No se pudo publicar el comentario",
     showConfirmButton: false,
     timer: 1000,
   });
 }
 async function getComments(id) {
-  //publicationPlaceHolder(true);
+  let comments = easyFetch.getById("comments");
+  let commentsData = "";
+  commentsPlaceHolder();
   const response = await easyFetch
-    .fetchData(
-      "/api/post/"+id+"/comments/get",
-      {},
-      "POST",
-      true
-    )
+    .fetchData("/feed/api/post/" + id + "/comments/get", {}, "POST", true)
     .catch((e) => {
       console.error("Error Fetching Publish", e);
       return null;
     });
   if (response && response.status && response.status == "ok") {
-    //getPublications();
-    return Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: response.msg,
-      showConfirmButton: false,
-      timer: 1000,
-    });
+    if (response.data.length && response.data.length > 0) {
+      for (let i = 0; i < response.data.length; i++) {
+        let single = `
+        <div class="col-md-12 mt-1 p-1 border rounded-3 text-left"><div class="row"><div class="col-3"> <b>${response.data[i].firstname} ${response.data[i].lastname}</b></div><div class="col-9"> 
+        ${response.data[i].content}</div></div></div>
+        `;
+        commentsData = commentsData + single;
+      }
+    } else {
+      commentsData = `<b>Se el primero en comentar</b>`;
+    }
+    comments.innerHTML = commentsData;
   }
-  return Swal.fire({
-    position: "top-end",
-    icon: "error",
-    title: "No se pudo publicar el post",
-    showConfirmButton: false,
-    timer: 1000,
-  });
 }
-function changeView(view=null){
-  if(!view || view=="allposts"){
-    let h1 = "Todas las Publicaciones"
+function commentsPlaceHolder() {
+  let comments = easyFetch.getById("comments");
+  comments.innerHTML = `
+  <div class="col-md-12 mt-1 p-1 border rounded-3 text-left"><div class="row"><div class="col-3"> <span class="placeholder col-3"></span></div><div class="col-9"> <span class="placeholder col-7"></span></div></div></div><div class="col-md-12 mt-1 p-1 border rounded-3 text-left"><div class="row mt-1"><div class="col-3"> <span class="placeholder col-4"></span></div><div class="col-9"> <span class="placeholder col-9"></span></div></div></div><div class="col-md-12 mt-1 p-1 border rounded-3 text-left"><div class="row"><div class="col-3"> <span class="placeholder col-6"></span></div><div class="col-9"> <span class="placeholder col-5"></span></div></div></div><div class="col-md-12 mt-1 p-1 border rounded-3 text-left"><div class="row"><div class="col-3"> <span class="placeholder col-3"></span></div><div class="col-9"> <span class="placeholder col-7"></span></div></div></div><div class="col-md-12 mt-1 p-1 border rounded-3 text-left"><div class="row"><div class="col-3"> <span class="placeholder col-4"></span></div><div class="col-9"> <span class="placeholder col-9"></span></div></div></div><div class="col-md-12 mt-1 p-1 border rounded-3 text-left"><div class="row"><div class="col-3"> <span class="placeholder col-2"></span></div><div class="col-9"> <span class="placeholder col-5"></span></div></div></div>
+  `;
+}
+function changeView(view = null) {
+  if (!view || view == "allposts") {
+    let h1 = "Todas las Publicaciones";
     getPublications();
-  }else if(view=="myposts"){
-    let h1 = "Mis Publicaciones"
+  } else if (view == "myposts") {
+    let h1 = "Mis Publicaciones";
     getPublications("my");
-  }
-  else if(view>0){
-    let h1 = "Sus Publicaciones"
+  } else if (view > 0) {
+    let h1 = "Sus Publicaciones";
     getPublications(view);
   }
 }
 
-async function message() {
-  Swal.fire({
-    icon: "info",
-    text: "registrando ...",
-  });
+async function sendMessage(id) {
   let response = await easyFetch
     .fetchData(
       "/messenger/api/registMessage",
       {
         content: "content-message",
-        chatid: 1
+        user2: id,
       },
       "POST",
       true
@@ -316,17 +318,9 @@ async function message() {
       return null;
     });
   if (response && response.status && response.status == "ok") {
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: response.msg,
-      showConfirmButton: false,
-      timer: 2500,
-    });
-    setTimeout(() => {
-      location.replace("/");
-    }, 2000);
-
+    getMessage(id);
+    let message = easyFetch.getById("content-message");
+    message.value="";
     return;
   }
   return Swal.fire({
@@ -336,4 +330,51 @@ async function message() {
     showConfirmButton: false,
     timer: 2500,
   });
+}
+async function getMessage(id) {
+  let messages = easyFetch.getById("messages");
+  let messagesData = "";
+  let response = await easyFetch
+    .fetchData(
+      "/messenger/api/getMessages",
+      {
+        user1: id,
+      },
+      "POST",
+      true
+    )
+    .catch((e) => {
+      console.error(e);
+      return null;
+    });
+  console.log("mensajes", response);
+  if (response && response.status && response.status == "ok") {
+    for (let i = 0; i < response.data.length; i++) {
+      if (response.my == response.data[i].userid) {
+        let single = `
+        <div class="my-2">
+         <div class="row"> 
+         <div class="col-md-6"></div>
+        <div class="right col-md-6">${response.data[i].content}</div>
+        </div>
+        </div>
+        `;
+        messagesData = messagesData + single;
+      } else {
+        let single = `
+        <div class="my-2">
+        <div class="row"> 
+          <div class="left col-md-6">${response.data[i].content}</div>
+          </div>
+          </div>
+        `;
+        messagesData = messagesData + single;
+      }
+      messages.innerHTML = messagesData;
+      
+    }
+    if(messagesData=="") messages.innerHTML = `<b>Aún no hay mensajes</b>`;
+  } else {
+    messages.innerHTML = `<b>Error al recibir mensajes</b>`;
+  }
 }

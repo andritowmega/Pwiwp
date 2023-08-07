@@ -26,7 +26,7 @@ class FeedService {
       .getPublicationById(data)
       .catch((e) => {
         console.error(
-          "SERVICE ACCOUNT PROFILE: cant create account profile",
+          "SERVICE ACCOUNT PROFILE: cant not get single post",
           e
         );
         return null;

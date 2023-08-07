@@ -46,10 +46,9 @@ class FeedController {
       return null;
     });
     if (data) {
-      console.log("post",data);
-      return res.render("feed/singlepost",{post:data,my:req.datatoken})
+      return res.render("feed/singlePost",{post:data,my:req.datatoken})
     }
-    return res.render("feed/singlepost",{post:null,my:req.datatoken})
+    return res.render("feed/singlePost",{post:null,my:req.datatoken})
   }
   static async GetPublicationsByUserId(req, res) {
     const FeedService = require("../services/feed.service");
@@ -107,13 +106,13 @@ class FeedController {
     if (data) {
       return res.json({
         status: "ok",
-        msg: "comentario creado",
-        data: null,
+        msg: "Comentarios obtenidos",
+        data: data,
       });
     }
     return res.json({
       status: "error",
-      msg: "Error al crear comentario",
+      msg: "No se pudo obtener comentarios",
       data: null,
     });
   }

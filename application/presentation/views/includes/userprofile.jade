@@ -6,6 +6,12 @@
                 p #{user.nickname}
                 h4 Friends 
                 p 15
+                p
+                    a(href="/messenger/#{user.nickname}/chat")  
+                        img(src="/images/mail-inbox.png" width="30px")
+                        br
+                        | Enviar mensaje 
+                        
     -} else{
         .row
             .col-md-12.text-center
