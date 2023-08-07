@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+  .row.mt-5 
+    .col-md-3 
+        include ../includes/profile
+        include ../includes/friends
+        include ../includes/notifications
+    .col-md-9.text-center 
+        .row 
+            .col#post
+                .row.mt-2
+                    .col-md-12.border.rounded-3.placeholder-glow 
+                        -if(post){
+                            .row 
+                                .col-4 
+                                    b Autor: #{post.firstname} #{post.lastname}
+                                .col-9 
+                            hr
+                            .row 
+                                .col-12 #{post.content}
+
+                        -}else{
+                            b No se pudo obtener la publicación
+                        -}
+                        
+                                
+        include ../includes/comments
+    script.
+      window.addEventListener('load', function() {
+        getComments(#{post.id});
+      });
+        

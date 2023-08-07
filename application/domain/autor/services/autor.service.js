@@ -1,4 +1,5 @@
 class AutorService {
+  //obtener perfil y datos de usuario
   static async AccountProfile(data) {
     const accountEntity = require("../entities/account.entity");
     const userEntity = require("../entities/user.entity");
@@ -20,6 +21,7 @@ class AutorService {
     }
     return null;
   }
+  //iniciar sesión con email y password
   static async Login(data) {
     const accountEntity = require("../entities/account.entity");
     const accountResponse = await accountEntity
@@ -40,6 +42,7 @@ class AutorService {
     }
     return null;
   }
+  //obtener todos los usuarios
   static async GetAllUsers() {
     const accountEntity = require("../entities/account.entity");
     const accountResponse = await accountEntity
@@ -50,6 +53,7 @@ class AutorService {
       });
     return accountResponse;
   }
+  //buscar por nombre
   static async SearchUsersByName(data) {
     const accountEntity = require("../entities/account.entity");
     const accountResponse = await accountEntity
@@ -60,6 +64,7 @@ class AutorService {
       });
     return accountResponse;
   }
+  //buscar por nickname
   static async getByNickName(data) {
     const accountEntity = require("../entities/account.entity");
     const accountResponse = await accountEntity

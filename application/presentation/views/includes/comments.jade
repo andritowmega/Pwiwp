@@ -1,0 +1,17 @@
+.comments.py-3#comments 
+    .row 
+        .col    
+            h4 Comentarios
+    .row 
+          .col-md-12
+              .alert.alert-dark(role='alert')
+                  .input-group
+                      textarea.form-control(aria-label='With textarea' placeholder="Escribe tu comentario" id="comment-content")
+                      button.btn.btn-outline-secondary(type='button' onclick="publishComment(#{post.id})") Publicar
+    .row.mt-2.p-1
+        .col-md-12.border.rounded-3.text-left
+            .row
+                .col-3 
+                    b Andres Carrasco Quispe 
+                .col-9 
+                    | Ha dado me gusta a tu respuesta

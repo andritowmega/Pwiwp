@@ -203,6 +203,85 @@ function dateformat() {
   });
   return formattedDate;
 }
+async function publishComment(id) {
+  const contentComment = easyFetch.getById("comment-content");
+  if (contentComment.value == "") {
+    return Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: "Debes agregar contenido a tu publicación",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+  Swal.fire({
+    icon: "info",
+    text: "publicando ...",
+  });
+  //publicationPlaceHolder(true);
+  const response = await easyFetch
+    .fetchData(
+      "/feed/api/post/comments/create",
+      {
+        content: "comment-content",
+        id:id,
+      },
+      "POST",
+      true
+    )
+    .catch((e) => {
+      console.error("Error Fetching Publish", e);
+      return null;
+    });
+  if (response && response.status && response.status == "ok") {
+    //getPublications();
+    return Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: response.msg,
+      showConfirmButton: false,
+      timer: 1000,
+    });
+  }
+  return Swal.fire({
+    position: "top-end",
+    icon: "error",
+    title: "No se pudo publicar el post",
+    showConfirmButton: false,
+    timer: 1000,
+  });
+}
+async function getComments(id) {
+  //publicationPlaceHolder(true);
+  const response = await easyFetch
+    .fetchData(
+      "/api/post/"+id+"/comments/get",
+      {},
+      "POST",
+      true
+    )
+    .catch((e) => {
+      console.error("Error Fetching Publish", e);
+      return null;
+    });
+  if (response && response.status && response.status == "ok") {
+    //getPublications();
+    return Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: response.msg,
+      showConfirmButton: false,
+      timer: 1000,
+    });
+  }
+  return Swal.fire({
+    position: "top-end",
+    icon: "error",
+    title: "No se pudo publicar el post",
+    showConfirmButton: false,
+    timer: 1000,
+  });
+}
 function changeView(view=null){
   if(!view || view=="allposts"){
     let h1 = "Todas las Publicaciones"

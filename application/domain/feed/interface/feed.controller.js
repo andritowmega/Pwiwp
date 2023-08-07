@@ -39,6 +39,18 @@ class FeedController {
       data: null,
     });
   }
+  static async GetSinglePublication(req, res) {
+    const FeedService = require("../services/feed.service");
+    const data = await FeedService.GetSinglePost(req.params).catch((e) => {
+      console.error("Feed CONTROLLER: cant not get");
+      return null;
+    });
+    if (data) {
+      console.log("post",data);
+      return res.render("feed/singlepost",{post:data,my:req.datatoken})
+    }
+    return res.render("feed/singlepost",{post:null,my:req.datatoken})
+  }
   static async GetPublicationsByUserId(req, res) {
     const FeedService = require("../services/feed.service");
     let data = null
@@ -63,6 +75,45 @@ class FeedController {
     return res.json({
       status: "error",
       msg: "Error al obtener publicaciones",
+      data: null,
+    });
+  }
+  static async CreateComment(req, res) {
+    const FeedService = require("../services/feed.service");
+    req.body.user_id=req.datatoken.id;
+    const data = await FeedService.CreateComment(req.body).catch((e) => {
+      console.error("Feed CONTROLLER: cant not create comment");
+      return null;
+    });
+    if (data) {
+      return res.json({
+        status: "ok",
+        msg: "comentario creado",
+        data: null,
+      });
+    }
+    return res.json({
+      status: "error",
+      msg: "Error al crear comentario",
+      data: null,
+    });
+  }
+  static async GetCommentsByIdPost(req, res) {
+    const FeedService = require("../services/feed.service");
+    const data = await FeedService.GetCommentsByIdPost(req.params).catch((e) => {
+      console.error("Feed CONTROLLER: cant not create comment");
+      return null;
+    });
+    if (data) {
+      return res.json({
+        status: "ok",
+        msg: "comentario creado",
+        data: null,
+      });
+    }
+    return res.json({
+      status: "error",
+      msg: "Error al crear comentario",
       data: null,
     });
   }
