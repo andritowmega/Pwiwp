@@ -7,6 +7,7 @@ var logger = require('morgan');
 
 var autorRouter = require('./domain/autor/interface/autor.route');
 var feedRouter = require('./domain/feed/interface/feed.route');
+var messengerRouter = require('./domain/messenger/interface/messenger.route');
 
 var app = express();
 app.use(cors());
@@ -23,8 +24,6 @@ app.use(express.static(path.join(__dirname, 'presentation/public')));
 
 app.use('/', autorRouter);
 app.use('/messenger', messengerRouter);
-
-app.use('/', autorRouter);
 app.use('/feed', feedRouter);
 
 // catch 404 and forward to error handler

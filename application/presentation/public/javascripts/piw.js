@@ -173,9 +173,23 @@ async function getPublications(id=null) {
           <hr/>
           <div class="row">
             <div class="col-md-12 text-justify">
-              ${response.data[i].content}
+              <div class="row">
+                <div class="col">
+                  ${response.data[i].content}
+                </div>
+              </div>
+              <div class="row"> 
+                  <div class="col"> 
+                      <hr/>
+                  </div>
+              </div>
+              <div class="row"> 
+                  <div class="col"> 
+                      <a href="/feed/post/${response.data[i].id}"> Comentarios </a>
+                  </div>
             </div>
           </div>
+
         </div> 
       </div>
       `;
@@ -252,10 +266,11 @@ async function publishComment(id) {
   });
 }
 async function getComments(id) {
-  //publicationPlaceHolder(true);
+  let comments = easyFetch.getById("comments");
+  let commentsData = ""
   const response = await easyFetch
     .fetchData(
-      "/api/post/"+id+"/comments/get",
+      "/feed/api/post/"+id+"/comments/get",
       {},
       "POST",
       true
@@ -264,23 +279,18 @@ async function getComments(id) {
       console.error("Error Fetching Publish", e);
       return null;
     });
+    console.log("response",response)
   if (response && response.status && response.status == "ok") {
-    //getPublications();
-    return Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: response.msg,
-      showConfirmButton: false,
-      timer: 1000,
-    });
+   
+    for(let i=0;i<response.data.length;i++){
+      let single = `
+      <div class="row"><div class="col-3"> <b>${response.data[i].firstname} ${response.data[i].lastname}</b></div><div class="col-9"> 
+      ${response.data[i].content}</div></div>
+      `;
+      commentsData = commentsData +single;
+    }
+    comments.innerHTML = commentsData;
   }
-  return Swal.fire({
-    position: "top-end",
-    icon: "error",
-    title: "No se pudo publicar el post",
-    showConfirmButton: false,
-    timer: 1000,
-  });
 }
 function changeView(view=null){
   if(!view || view=="allposts"){

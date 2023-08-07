@@ -1,4 +1,4 @@
-.comments.py-3#comments 
+.comments.py-3
     .row 
         .col    
             h4 Comentarios
@@ -9,7 +9,7 @@
                       textarea.form-control(aria-label='With textarea' placeholder="Escribe tu comentario" id="comment-content")
                       button.btn.btn-outline-secondary(type='button' onclick="publishComment(#{post.id})") Publicar
     .row.mt-2.p-1
-        .col-md-12.border.rounded-3.text-left
+        #comments.col-md-12.border.rounded-3.text-left
             .row
                 .col-3 
                     b Andres Carrasco Quispe 

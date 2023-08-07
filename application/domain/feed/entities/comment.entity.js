@@ -23,7 +23,7 @@ module.exports = {
       const connection = connectionDb();
       const data = await connection
         .query(
-          "SEELCT c.*,u.firstname,u.lastname FROM comment c INNER JOIN userinfo u ON c.user.id = u.id WHERE c.id_publication = $1",[id]
+          "SELECT c.*,u.firstname,u.lastname FROM comment c INNER JOIN userinfo u ON c.user_id = u.id WHERE c.id_publication = $1",[id]
         )
         .catch((err) => {
           console.error("MODEL User: Can not get By Id", err);
