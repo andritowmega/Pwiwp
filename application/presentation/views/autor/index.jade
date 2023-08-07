@@ -7,6 +7,12 @@ block content
         include ../includes/friends
         include ../includes/notifications
     .col-md-9.text-center 
+        .row 
+          .col-md-12
+              .alert.alert-dark(role='alert')
+                  .input-group
+                      textarea.form-control(aria-label='With textarea' placeholder="Publicar algo" id="publication-content")
+                      button.btn.btn-outline-secondary(type='button' onclick="publish()") Publicar
         include ../includes/publications
     script.
       window.addEventListener('load', function() {

@@ -20,6 +20,19 @@ class FeedService {
       });
     return publicationResponse;
   }
+  static async GetPostsByUserId(data) {
+    const publicationEntity = require("../entities/publication.entity");
+    const publicationResponse = await publicationEntity
+      .getPublicationsByUserId(data)
+      .catch((e) => {
+        console.error(
+          "SERVICE ACCOUNT PROFILE: cant create account profile",
+          e
+        );
+        return null;
+      });
+    return publicationResponse;
+  }
 }
 
 module.exports = FeedService;

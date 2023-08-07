@@ -1,0 +1,16 @@
+.profile
+    .row 
+        h4 Usuarios
+    .row 
+        .col#users
+            -if(users==null){
+                b Ha ocurrido un error al obtener los usuarios
+            -} else if(users!=null && users.length && users.length == 0){
+                b No se han encontrado usuarios
+            -} else if(users && users.length && users.length>0){
+                 each user in users
+                    a(href="/profile/#{user.nickname}") 
+                        .row.mt-2
+                            .col-md-12.border.rounded-3.placeholder-glow.text-left 
+                                | #{user.firstname} #{user.lastname}
+            -}

@@ -21,12 +21,38 @@ class FeedController {
     }
   }
   static async GetPublications(req, res) {
-    console.log("get")
     const FeedService = require("../services/feed.service");
     const data = await FeedService.GetPosts().catch((e) => {
       console.error("Feed CONTROLLER: cant not get");
       return null;
     });
+    if (data) {
+      return res.json({
+        status: "ok",
+        msg: "Todas las Publicaciones",
+        data: data,
+      });
+    }
+    return res.json({
+      status: "error",
+      msg: "Error al obtener publicaciones",
+      data: null,
+    });
+  }
+  static async GetPublicationsByUserId(req, res) {
+    const FeedService = require("../services/feed.service");
+    let data = null
+    if(req.params && req.params.id){
+      data = await FeedService.GetPostsByUserId(req.params).catch((e) => {
+        console.error("Feed CONTROLLER: cant not get");
+        return null;
+      });
+    }else{
+      data = await FeedService.GetPostsByUserId(req.datatoken).catch((e) => {
+        console.error("Feed CONTROLLER: cant not get");
+        return null;
+      });
+    }
     if (data) {
       return res.json({
         status: "ok",

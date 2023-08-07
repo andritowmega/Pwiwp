@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  .row.mt-5 
+    .col-md-3 
+        include ../includes/profile
+        include ../includes/friends
+        include ../includes/notifications
+    .col-md-9.text-center.border.rounded-3.p-3 
+        .row 
+            .col-md-3 
+                include ../includes/userprofile
+            .col-md-9
+                include ../includes/publications
+    script.
+      window.addEventListener('load', function() {
+        changeView(#{user.id});
+      });

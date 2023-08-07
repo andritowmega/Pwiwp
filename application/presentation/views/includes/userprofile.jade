@@ -1,0 +1,13 @@
+.profile.border.rounded-3.py-3 
+    -if(user){
+        .row
+            .col-md-12.text-center 
+                h4 #{user.firstname} #{user.lastname}
+                p #{user.nickname}
+                h4 Friends 
+                p 15
+    -} else{
+        .row
+            .col-md-12.text-center
+                b No se pudo obtener el perfil 
+    -}

@@ -12,6 +12,7 @@ module.exports = {
       nickname: user.nickname,
       exp: moment().add(180, "days").unix(),
     };
+    console.log("payload",payload);
     return jwt.sign(payload, configtoken.TOKEN_SECRET_USER);
   },
 

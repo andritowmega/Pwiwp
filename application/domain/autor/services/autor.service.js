@@ -40,6 +40,36 @@ class AutorService {
     }
     return null;
   }
+  static async GetAllUsers() {
+    const accountEntity = require("../entities/account.entity");
+    const accountResponse = await accountEntity
+      .getAll()
+      .catch((e) => {
+        console.error("SERVICE ACCOUNT LOGIN: cant get all", e);
+        return null;
+      });
+    return accountResponse;
+  }
+  static async SearchUsersByName(data) {
+    const accountEntity = require("../entities/account.entity");
+    const accountResponse = await accountEntity
+      .searchUserByName(data)
+      .catch((e) => {
+        console.error("SERVICE ACCOUNT LOGIN: cant find users", e);
+        return null;
+      });
+    return accountResponse;
+  }
+  static async getByNickName(data) {
+    const accountEntity = require("../entities/account.entity");
+    const accountResponse = await accountEntity
+      .getByUserByNick(data)
+      .catch((e) => {
+        console.error("SERVICE ACCOUNT LOGIN: cant get by nickname", e);
+        return null;
+      });
+    return accountResponse;
+  }
 }
 
 module.exports = AutorService;
