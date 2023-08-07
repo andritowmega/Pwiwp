@@ -1,7 +1,7 @@
 
 # Pwipw
 
-A brief description of what this project does and who it's for
+RED SOCIAL
 
 # LAB 9: ESTILOS DE LA PROGRAMACIÓN
 Estilo 1 - Aspect: Descomponer el problema con formas de abstracción.
