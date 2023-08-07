@@ -1,17 +1,50 @@
 .comments.py-3
-    .row 
-        .col    
-            h4 Comentarios
+    
     .row 
           .col-md-12
               .alert.alert-dark(role='alert')
                   .input-group
                       textarea.form-control(aria-label='With textarea' placeholder="Escribe tu comentario" id="comment-content")
                       button.btn.btn-outline-secondary(type='button' onclick="publishComment(#{post.id})") Publicar
+    .row 
+        .col    
+            h4 Comentarios
     .row.mt-2.p-1
-        #comments.col-md-12.border.rounded-3.text-left
-            .row
-                .col-3 
-                    b Andres Carrasco Quispe 
-                .col-9 
-                    | Ha dado me gusta a tu respuesta
+        #comments.placeholder-glow 
+            .col-md-12.mt-1.p-1.border.rounded-3.text-left
+                .row
+                    .col-3 
+                        span.placeholder.col-3
+                    .col-9 
+                        span.placeholder.col-7
+            .col-md-12.mt-1.p-1.border.rounded-3.text-left
+                .row.mt-1
+                    .col-3 
+                        span.placeholder.col-4
+                    .col-9 
+                        span.placeholder.col-9
+            .col-md-12.mt-1.p-1.border.rounded-3.text-left
+                .row
+                    .col-3 
+                        span.placeholder.col-6
+                    .col-9 
+                        span.placeholder.col-5
+            .col-md-12.mt-1.p-1.border.rounded-3.text-left
+                .row
+                    .col-3 
+                        span.placeholder.col-3
+                    .col-9 
+                        span.placeholder.col-7
+            .col-md-12.mt-1.p-1.border.rounded-3.text-left
+                .row
+                    .col-3 
+                        span.placeholder.col-4
+                    .col-9 
+                        span.placeholder.col-9
+            .col-md-12.mt-1.p-1.border.rounded-3.text-left
+                .row
+                    .col-3 
+                        span.placeholder.col-2
+                    .col-9 
+                        span.placeholder.col-5
+

@@ -14,7 +14,9 @@ block content
                         -if(post){
                             .row 
                                 .col-4 
-                                    b Autor: #{post.firstname} #{post.lastname}
+                                    b 
+                                        | Autor: 
+                                        a(href="/profile/#{post.nickname}") #{post.firstname} #{post.lastname}
                                 .col-9 
                             hr
                             .row 

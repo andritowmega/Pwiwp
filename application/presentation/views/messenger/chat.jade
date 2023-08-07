@@ -1,0 +1,63 @@
+extends ../layout
+
+block content
+  .row.mt-5 
+    .col-md-3 
+        include ../includes/profile
+        include ../includes/friends
+        include ../includes/notifications
+    .col-md-9.text-center 
+        .row 
+            .col
+                .row    
+                    .col.text-left
+                        b #{chat.firstname} #{chat.lastname}
+                .row.mt-2
+                    .col-md-12.border.rounded-3.placeholder-glow#messages 
+                        .div.my-2
+                            .row 
+                                .left.col-md-6 
+                                    br
+                        .div.my-2 
+                            .row
+                                .col-md-6
+                                .right.col-md-6 
+                                    br
+                        .div.my-2
+                            .row 
+                                .left.col-md-6 
+                                    br
+                        .div.my-2 
+                            .row
+                                .col-md-6
+                                .right.col-md-6 
+                                    br
+                        .div.my-2
+                            .row 
+                                .left.col-md-6 
+                                    br
+                        .div.my-2 
+                            .row
+                                .col-md-6
+                                .right.col-md-6 
+                                    br
+                        .div.my-2
+                            .row 
+                                .left.col-md-6 
+                                    br
+                        .div.my-2 
+                            .row
+                                .col-md-6
+                                .right.col-md-6 
+                                    br
+        .row 
+            .col 
+                .alert.alert-dark(role='alert')
+                    .input-group
+                        textarea.form-control(aria-label='With textarea' placeholder="enviale un mensaje" id="content-message")
+                        button.btn.btn-outline-secondary(type='button' onclick="sendMessage(#{chat.id})") Enviar
+    script.
+      window.addEventListener('load', function() {
+        getMessage(#{chat.id})
+      });
+        

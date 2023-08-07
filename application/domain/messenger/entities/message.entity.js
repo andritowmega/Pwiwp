@@ -1,5 +1,5 @@
 const connectionDb = require("../../../config/dbconnections");
-class messageEntity {
+module.exports = {
   async create({content, chatid, userid}) {
     return new Promise(async (resolve, reject) => {
       const connection = connectionDb();
@@ -20,7 +20,23 @@ class messageEntity {
       }
       return resolve(data.rows[0]);
     });
+  },
+  async getMessagesByChatId({id}) {
+    return new Promise(async (resolve, reject) => {
+      const connection = connectionDb();
+      const data = await connection
+        .query(
+          "SELECT * FROM message WHERE chatid = $1 ORDER BY id ASC",
+          [id]
+        )
+        .catch((err) => {
+          console.error("MODEL message: Can not get messages", err);
+          return null;
+        });
+      connection.end();
+      if (data && data.rows)
+        return resolve(data.rows);
+      return reject(null);
+    });
   }
 };
-
-module.exports = messageEntity;
