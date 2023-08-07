@@ -216,3 +216,45 @@ function changeView(view=null){
     getPublications(view);
   }
 }
+
+async function message() {
+  Swal.fire({
+    icon: "info",
+    text: "registrando ...",
+  });
+  let response = await easyFetch
+    .fetchData(
+      "/messenger/api/registMessage",
+      {
+        content: "content-message",
+        chatid: 1
+      },
+      "POST",
+      true
+    )
+    .catch((e) => {
+      console.error(e);
+      return null;
+    });
+  if (response && response.status && response.status == "ok") {
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: response.msg,
+      showConfirmButton: false,
+      timer: 2500,
+    });
+    setTimeout(() => {
+      location.replace("/");
+    }, 2000);
+
+    return;
+  }
+  return Swal.fire({
+    position: "top-end",
+    icon: "error",
+    title: response.msg ? response.msg : "No se pudo conectar al servidor",
+    showConfirmButton: false,
+    timer: 2500,
+  });
+}
