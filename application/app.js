@@ -22,6 +22,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'presentation/public')));
 
 app.use('/', autorRouter);
+app.use('/messenger', messengerRouter);
+
+app.use('/', autorRouter);
 app.use('/feed', feedRouter);
 
 // catch 404 and forward to error handler
