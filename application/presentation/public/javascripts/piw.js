@@ -320,7 +320,7 @@ async function sendMessage(id) {
   if (response && response.status && response.status == "ok") {
     getMessage(id);
     let message = easyFetch.getById("content-message");
-    message.value="";
+    message.value = "";
     return;
   }
   return Swal.fire({
@@ -347,7 +347,6 @@ async function getMessage(id) {
       console.error(e);
       return null;
     });
-  console.log("mensajes", response);
   if (response && response.status && response.status == "ok") {
     for (let i = 0; i < response.data.length; i++) {
       if (response.my == response.data[i].userid) {
@@ -371,10 +370,89 @@ async function getMessage(id) {
         messagesData = messagesData + single;
       }
       messages.innerHTML = messagesData;
-      
     }
-    if(messagesData=="") messages.innerHTML = `<b>Aún no hay mensajes</b>`;
+    if (messagesData == "") messages.innerHTML = `<b>Aún no hay mensajes</b>`;
   } else {
     messages.innerHTML = `<b>Error al recibir mensajes</b>`;
+  }
+}
+async function reaction(id) {
+  let response = await easyFetch
+    .fetchData(
+      "/feed/api/post/" + id + "/reactions/create",
+      {
+        id: id,
+      },
+      "POST",
+      true
+    )
+    .catch((e) => {
+      console.error(e);
+      return null;
+    });
+  if (response && response.status && response.status == "ok") {
+    getReactions(id);
+    return;
+  }
+}
+async function getReactions(id) {
+  let reaction = easyFetch.getById("reaction");
+  let countReaction = easyFetch.getById("countReaction");
+  let inFor= false;
+  let response = await easyFetch
+    .fetchData(
+      "/feed/api/post/" + id + "/reactions/get",
+      {
+        id: id,
+      },
+      "POST",
+      true
+    )
+    .catch((e) => {
+      console.error(e);
+      return null;
+    });
+  if (response && response.status && response.status == "ok") {
+    for (let i = 0; i < response.data.length; i++) {
+      if (response.data[i].user_id == response.my) {
+        inFor=true;
+        let single = `
+          <span>${response.data.length}</span>
+          <a href="javascript:unReaction(${id})">
+            <img src="/images/like.png" width="20px"/> Diste Piw
+          </a>
+        `;
+        reaction.innerHTML = single;
+      }
+    }
+    if(!inFor){
+      let single1 = `
+        <span>${response.data.length}</span>
+        <a href="javascript:reaction(${id})">
+          <img src="/images/like.png" width="20px"/> Dar Piw
+        </a>
+      `;
+      reaction.innerHTML = single1;
+    }
+    return;
+  }
+}
+async function unReaction(id) {
+  let response = await easyFetch
+    .fetchData(
+      "/feed/api/post/" + id + "/reactions/delete",
+      {
+        id: id,
+      },
+      "POST",
+      true
+    )
+    .catch((e) => {
+      console.error(e);
+      return null;
+    });
+  if (response && response.status && response.status == "ok") {
+    getReactions(id);
+    return;
   }
 }
