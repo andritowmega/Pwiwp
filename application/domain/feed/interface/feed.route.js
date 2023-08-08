@@ -40,5 +40,20 @@ router.post(
   auth.middlewareUserApi,
   FeedController.GetCommentsByIdPost
 );
+router.post(
+  "/api/post/:id/reactions/create",
+  auth.middlewareUserApi,
+  FeedController.CreateReaction
+);
+router.post(
+  "/api/post/:id/reactions/get",
+  auth.middlewareUserApi,
+  FeedController.GetReactions
+);
+router.post(
+  "/api/post/:id/reactions/delete",
+  auth.middlewareUserApi,
+  FeedController.DeleteReactions
+);
 
 module.exports = router;

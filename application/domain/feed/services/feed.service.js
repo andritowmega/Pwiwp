@@ -72,6 +72,45 @@ class FeedService {
       });
     return commentResponse;
   }
+  static async CreateReaction(data) {
+    const reactionEntity = require("../entities/reaction.entity");
+    const reactionResponse = await reactionEntity
+      .create(data)
+      .catch((e) => {
+        console.error(
+          "SERVICE ACCOUNT PROFILE: cant create Reaction",
+          e
+        );
+        return null;
+      });
+    return reactionResponse;
+  }
+  static async GetReactionsById(data) {
+    const reactionEntity = require("../entities/reaction.entity");
+    const reactionResponse = await reactionEntity
+      .getByIdPost(data)
+      .catch((e) => {
+        console.error(
+          "SERVICE ACCOUNT PROFILE: cant get Reaction",
+          e
+        );
+        return null;
+      });
+    return reactionResponse;
+  }
+  static async DeleteReactions(data) {
+    const reactionEntity = require("../entities/reaction.entity");
+    const reactionResponse = await reactionEntity
+      .DeleteReaction(data)
+      .catch((e) => {
+        console.error(
+          "SERVICE ACCOUNT PROFILE: cant delete reaction",
+          e
+        );
+        return null;
+      });
+    return reactionResponse;
+  }
 }
 
 module.exports = FeedService;

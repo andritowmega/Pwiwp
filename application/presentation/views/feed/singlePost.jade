@@ -4,8 +4,6 @@ block content
   .row.mt-5 
     .col-md-3 
         include ../includes/profile
-        include ../includes/friends
-        include ../includes/notifications
     .col-md-9.text-center 
         .row 
             .col#post
@@ -21,8 +19,12 @@ block content
                             hr
                             .row 
                                 .col-12 #{post.content}
-                                
-
+                            .row 
+                                .col-12.text-left#reaction 
+                                    span#countReaction -
+                                    a(href="javascript:reaction(#{post.id})")
+                                        img(src="/images/like.png" width="20px") 
+                                        |  Dar Piw
                         -}else{
                             b No se pudo obtener la publicación
                         -}
@@ -32,5 +34,6 @@ block content
     script.
       window.addEventListener('load', function() {
         getComments(#{post.id});
+        getReactions(#{post.id});
       });
         
