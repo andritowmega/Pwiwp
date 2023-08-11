@@ -12,7 +12,7 @@ async function login() {
     "POST",
     true
   );
-  if (response && response.status && response.status == "ok") {
+  if (response?.status && response.status == "ok") {
     Swal.fire({
       position: "top-end",
       icon: "success",
@@ -20,7 +20,8 @@ async function login() {
       showConfirmButton: false,
       timer: 2500,
     });
-    easyFetch.setCookie("dpwi", response.data.token, (path = "/"));
+    let path = "/";
+    easyFetch.setCookie("dpwi", response.data.token, (path));
     setTimeout(() => {
       location.replace("/");
     }, 2000);
@@ -35,7 +36,8 @@ async function login() {
   }
 }
 function closeSession() {
-  easyFetch.setCookie("dpwi", "", (path = "/"));
+  let path = "/";
+  easyFetch.setCookie("dpwi", "", (path));
   location.replace("/");
 }
 async function register() {
@@ -68,7 +70,7 @@ async function register() {
       console.error(e);
       return null;
     });
-  if (response && response.status && response.status == "ok") {
+  if (response?.status && response.status == "ok") {
     Swal.fire({
       position: "top-end",
       icon: "success",
@@ -120,7 +122,7 @@ async function publish() {
       console.error("Error Fetching Publish", e);
       return null;
     });
-  if (response && response.status && response.status == "ok") {
+  if (response?.status && response.status == "ok") {
     getPublications();
     return Swal.fire({
       position: "top-end",
@@ -156,18 +158,18 @@ async function getPublications(id = null) {
       console.error("Error Fetching Publish", e);
       return null;
     });
-  if (response && response.status && response.status == "ok") {
+  if (response?.status && response.status == "ok") {
     let dataPublications = "";
-    for (let i = 0; i < response.data.length; i++) {
+    for (const element of response.data) {
       let model = `
       <div class="row mt-2">
         <div class="col-md-12 border rounded-3 placeholder-glow">
           <div class="row">
-            <div class="col-3"> Autor: ${response.data[i].firstname}  ${
-        response.data[i].lastname
+            <div class="col-3"> Autor: ${element.firstname}  ${
+        element.lastname
       } </div>
             <div class="col-9 text-right"> ${dateformat(
-              response.data[i].date
+              //element.date
             )} </div>
           </div>
           <hr/>
@@ -175,7 +177,7 @@ async function getPublications(id = null) {
             <div class="col-md-12 text-justify">
               <div class="row">
                 <div class="col">
-                  ${response.data[i].content}
+                  ${element.content}
                 </div>
               </div>
               <div class="row"> 
@@ -186,7 +188,7 @@ async function getPublications(id = null) {
               <div class="row"> 
                   <div class="col"> 
                       <a href="/feed/post/${
-                        response.data[i].id
+                        element.id
                       }"> Comentarios </a>
                   </div>
             </div>
@@ -231,7 +233,6 @@ async function publishComment(id) {
     });
   }
   commentsPlaceHolder();
-  //publicationPlaceHolder(true);
   const response = await easyFetch
     .fetchData(
       "/feed/api/post/comments/create",
@@ -246,7 +247,7 @@ async function publishComment(id) {
       console.error("Error Fetching Publish", e);
       return null;
     });
-  if (response && response.status && response.status == "ok") {
+  if (response?.status && response.status == "ok") {
     getComments(id);
     return;
   }
@@ -268,12 +269,12 @@ async function getComments(id) {
       console.error("Error Fetching Publish", e);
       return null;
     });
-  if (response && response.status && response.status == "ok") {
+  if (response?.status && response.status == "ok") {
     if (response.data.length && response.data.length > 0) {
-      for (let i = 0; i < response.data.length; i++) {
+      for (const element of response.data) {
         let single = `
-        <div class="col-md-12 mt-1 p-1 border rounded-3 text-left"><div class="row"><div class="col-3"> <b>${response.data[i].firstname} ${response.data[i].lastname}</b></div><div class="col-9"> 
-        ${response.data[i].content}</div></div></div>
+        <div class="col-md-12 mt-1 p-1 border rounded-3 text-left"><div class="row"><div class="col-3"> <b>${element.firstname} ${element.lastname}</b></div><div class="col-9"> 
+        ${element.content}</div></div></div>
         `;
         commentsData = commentsData + single;
       }
@@ -291,13 +292,13 @@ function commentsPlaceHolder() {
 }
 function changeView(view = null) {
   if (!view || view == "allposts") {
-    let h1 = "Todas las Publicaciones";
+    //"Todas las Publicaciones";
     getPublications();
   } else if (view == "myposts") {
-    let h1 = "Mis Publicaciones";
+    //"Mis Publicaciones";
     getPublications("my");
   } else if (view > 0) {
-    let h1 = "Sus Publicaciones";
+    //"Sus Publicaciones";
     getPublications(view);
   }
 }
@@ -317,7 +318,7 @@ async function sendMessage(id) {
       console.error(e);
       return null;
     });
-  if (response && response.status && response.status == "ok") {
+  if (response?.status && response.status == "ok") {
     getMessage(id);
     let message = easyFetch.getById("content-message");
     message.value = "";
@@ -347,14 +348,14 @@ async function getMessage(id) {
       console.error(e);
       return null;
     });
-  if (response && response.status && response.status == "ok") {
-    for (let i = 0; i < response.data.length; i++) {
-      if (response.my == response.data[i].userid) {
+  if (response?.status && response.status == "ok") {
+    for (const element of response.data) {
+      if (response.my == element.userid) {
         let single = `
         <div class="my-2">
          <div class="row"> 
          <div class="col-md-6"></div>
-        <div class="right col-md-6">${response.data[i].content}</div>
+        <div class="right col-md-6">${element.content}</div>
         </div>
         </div>
         `;
@@ -363,7 +364,7 @@ async function getMessage(id) {
         let single = `
         <div class="my-2">
         <div class="row"> 
-          <div class="left col-md-6">${response.data[i].content}</div>
+          <div class="left col-md-6">${element.content}</div>
           </div>
           </div>
         `;
@@ -390,14 +391,12 @@ async function reaction(id) {
       console.error(e);
       return null;
     });
-  if (response && response.status && response.status == "ok") {
+  if (response?.status && response.status == "ok") {
     getReactions(id);
-    return;
   }
 }
 async function getReactions(id) {
   let reaction = easyFetch.getById("reaction");
-  let countReaction = easyFetch.getById("countReaction");
   let inFor= false;
   let response = await easyFetch
     .fetchData(
@@ -412,9 +411,9 @@ async function getReactions(id) {
       console.error(e);
       return null;
     });
-  if (response && response.status && response.status == "ok") {
-    for (let i = 0; i < response.data.length; i++) {
-      if (response.data[i].user_id == response.my) {
+  if (response?.status && response.status == "ok") {
+    for (const element of response.data) {
+      if (element.user_id == response.my) {
         inFor=true;
         let single = `
           <span>${response.data.length}</span>
@@ -434,7 +433,6 @@ async function getReactions(id) {
       `;
       reaction.innerHTML = single1;
     }
-    return;
   }
 }
 async function unReaction(id) {
@@ -451,8 +449,7 @@ async function unReaction(id) {
       console.error(e);
       return null;
     });
-  if (response && response.status && response.status == "ok") {
+  if (response?.status && response.status == "ok") {
     getReactions(id);
-    return;
   }
 }

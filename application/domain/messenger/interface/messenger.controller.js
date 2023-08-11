@@ -1,4 +1,4 @@
-class messengerController {
+class MessengerController {
   static async Chat(req, res) {
     const AutorService = require("../../autor/services/autor.service");
     let data = null;
@@ -13,30 +13,6 @@ class messengerController {
     }
   }
   static async registMessage(req, res) {
-    const messageService = require("../services/messageDomain.service");
-    req.body.userid = req.datatoken.id;
-    let user1 = Number(req.body.user2)
-    let chatid = user1 > req.datatoken.id ? user1+"-"+req.datatoken.id : req.datatoken.id + "-" + user1
-    req.body.chatid = chatid;
-    const data = await messageService.createMessage(req.body).catch((e) => {
-      console.error("MESSAGE CONTROLLER: can not regist message");
-      return null;
-    });
-    if (data) {
-      return res.json({
-        status: "ok",
-        msg: "Registro de mensaje enviado",
-        data: null,
-      });
-    } else {
-      return res.json({
-        status: "error",
-        msg: "No se pudo registrar el mensaje",
-        data: null,
-      });
-    }
-  }
-  static async chatMessage(req, res) {
     const messageService = require("../services/messageDomain.service");
     req.body.userid = req.datatoken.id;
     let user1 = Number(req.body.user2)
@@ -87,4 +63,4 @@ class messengerController {
   }
 }
 
-module.exports = messengerController;
+module.exports = MessengerController;

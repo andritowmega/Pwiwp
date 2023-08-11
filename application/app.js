@@ -1,15 +1,15 @@
-var createError = require('http-errors');
-var express = require('express');
-var cors = require('cors');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+let createError = require('http-errors');
+let express = require('express');
+let cors = require('cors');
+let path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
 
-var autorRouter = require('./domain/autor/interface/autor.route');
-var feedRouter = require('./domain/feed/interface/feed.route');
-var messengerRouter = require('./domain/messenger/interface/messenger.route');
+let autorRouter = require('./domain/autor/interface/autor.route');
+let feedRouter = require('./domain/feed/interface/feed.route');
+let messengerRouter = require('./domain/messenger/interface/messenger.route');
 
-var app = express();
+let app = express();
 app.use(cors());
 
 // view engine setup

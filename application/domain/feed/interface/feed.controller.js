@@ -53,7 +53,7 @@ class FeedController {
   static async GetPublicationsByUserId(req, res) {
     const FeedService = require("../services/feed.service");
     let data = null
-    if(req.params && req.params.id){
+    if(req.params?.id){
       data = await FeedService.GetPostsByUserId(req.params).catch((e) => {
         console.error("Feed CONTROLLER: cant not get");
         return null;

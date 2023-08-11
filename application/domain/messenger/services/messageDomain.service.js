@@ -1,4 +1,4 @@
-class messageDomain {
+class MessageDomain {
     static async createMessage(data) {
         const messageEntity = require("../entities/message.entity");
         const messageResponse = await messageEntity.create(data).catch((e) => {
@@ -17,4 +17,4 @@ class messageDomain {
     }
 }
 
-module.exports = messageDomain;
+module.exports = MessageDomain;

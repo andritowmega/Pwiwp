@@ -30,7 +30,7 @@ class AutorService {
         console.error("SERVICE ACCOUNT LOGIN: cant find by email", e);
         return null;
       });
-    if (accountResponse && accountResponse.password) {
+    if (accountResponse?.password) {
       const auth = require("../../../utils/auth");
       const ok = await auth.comparePassword(data.password, accountResponse.password);
       if (ok) {

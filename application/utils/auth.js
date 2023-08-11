@@ -56,13 +56,13 @@ module.exports = {
 
 
   comparePassword: async function (password, passwordhash) {
-    const bcrypt = require("bcryptjs");
-    return new Promise(async (resolve, reject) => {
-      bcrypt.compare(password, passwordhash, (err, same) => {
-        if (err) return reject(err);
-        return resolve(same);
-      });
-    });
+    try {
+      const same = await bcrypt.compare(password, passwordhash);
+      return same;
+    } catch (err) {
+      console.error("Error comparing passwords", err);
+      return false;
+    }
   },
 
   middlewareUser: async function (req, res, next) {

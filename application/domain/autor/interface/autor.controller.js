@@ -50,7 +50,7 @@ class AutorController {
   static async ViewGetAllUsers(req, res) {
     const AutorService = require("../services/autor.service");
     let data = null
-    if(req.query && req.query.name && req.query.name!=""){
+    if (req.query?.name !== ""){
       data = await AutorService.SearchUsersByName(req.query).catch((e) => {
         console.error("USER CONTROLLER: cant not find users");
         return null;
@@ -70,7 +70,7 @@ class AutorController {
   static async ViewGetByNickname(req, res) {
     const AutorService = require("../services/autor.service");
     let data = null
-    if(req.params && req.params.nickname){
+    if (req.params?.nickname){
       data = await AutorService.getByNickName(req.params).catch((e) => {
         console.error("USER CONTROLLER: cant not find users");
         return null;
