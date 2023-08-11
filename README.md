@@ -1,16 +1,16 @@
 
 # Pwipw: RED SOCIAL
 
-##Propósito
+## Propósito
 La motivación para la realización es ayudar a la comunicación en la sociedad con el fin
 de mejorar la libertad de expresión y la libertad de información. Ello implica que nuestros
 usuarios puedan compartir información al momento en una época donde las personas
 necesitamos interconexión al instante.
 
-##Funcionalidades
-###Diagrama de Casos de Uso
+## Funcionalidades
+### Diagrama de Casos de Uso
 ![image](https://github.com/andritowmega/Pwiwp/assets/104222114/f6b442f2-efbc-40b7-a34d-80dbe07ffca2)
-###Prototipos
+### Prototipos
 Algunas imágenes de los prototipos iniciales, que al final tuvieron que cambiar
 ![Ajustes@1x](https://github.com/andritowmega/Pwiwp/assets/104222114/b1b87420-8e93-45b5-bcde-3263f218481d)
 ![Inicio@1x](https://github.com/andritowmega/Pwiwp/assets/104222114/2b9fcad3-fc35-4b35-93e4-f5ecaddcc99f)
@@ -18,19 +18,19 @@ Algunas imágenes de los prototipos iniciales, que al final tuvieron que cambiar
 ![Repwippear@1x](https://github.com/andritowmega/Pwiwp/assets/104222114/eb77888c-470d-4bcc-a87c-236ec8ceb1c1)
 
 
-##Modelo de dominio
+## Modelo de dominio
 ![DDD](https://github.com/andritowmega/Pwiwp/assets/104222114/a1d058c2-a283-4716-b5e8-6ce20c43c747)
 
 
-##Arquitectura y patrones
+## Arquitectura y patrones
 
-##Prácticas de codificación limpia aplicadas
+## Prácticas de codificación limpia aplicadas
 
-##Estilos de programación Aplicados
+## Estilos de programación Aplicados
 
-##Principios SOLID aplicados
+## Principios SOLID aplicados
 
-##Conceptos DDD aplicados
+## Conceptos DDD aplicados
 
 # LAB 9: ESTILOS DE LA PROGRAMACIÓN
 Estilo 1 - Aspect: Descomponer el problema con formas de abstracción.
