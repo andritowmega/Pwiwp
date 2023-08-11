@@ -723,4 +723,17 @@ class MessageDomain {
 ```
 
 ## Conceptos DDD aplicados
+![image](https://github.com/andritowmega/Pwiwp/assets/104222114/ee6b5c1c-3162-49dd-b95a-49e5cbc6366f)
 
+### 1. Entidades
+En las entidades se definen todos los modelos que el negocio necesita para representar. Las entidades son objetos con identidad única, que se mantiene en el tiempo y cuyos atributos no son su principal característica.
+
+### 2. Arquitectura en Capas
+#### * Vistas (Capa de Presentación):
+En esta capa, se encuentran las interfaces de usuario y prototipos que permiten a los usuarios interactuar con la red social. Las imágenes de los prototipos y los diagramas de casos de uso ayudan a visualizar cómo los usuarios pueden utilizar la aplicación y acceder a las funcionalidades proporcionadas por las capas subyacentes.
+
+#### * Capa de Negocio (Capa de Lógica de Aplicación):
+La capa de negocio contiene la lógica que gobierna la funcionalidad principal de la red social. Aquí se manejan aspectos como la publicación y compartición de contenido, la autenticación y la gestión de perfiles de usuarios. La separación de esta capa permite que las reglas de negocio sean independientes de las preocupaciones de la interfaz de usuario y de la manipulación directa de la base de datos.
+
+#### * Capa de Base de Datos (Capa de Acceso a Datos):
+En la capa de base de datos, se gestionan las operaciones de almacenamiento y recuperación de datos. Se utilizan modelos de dominio y entidades para representar las estructuras de datos en la base de datos, y se aplican patrones como el Modelo de Dominio DDD (Domain-Driven Design) para modelar y acceder a la información de manera coherente. Las consultas SQL y las interacciones con la base de datos se manejan en esta capa.
