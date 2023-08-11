@@ -17,105 +17,101 @@ Algunas imágenes de los prototipos iniciales, que al final tuvieron que cambiar
 ![publicar pwipp@1x](https://github.com/andritowmega/Pwiwp/assets/104222114/9620cdb6-23a3-41d3-9d46-3f3a9612ebd4)
 ![Repwippear@1x](https://github.com/andritowmega/Pwiwp/assets/104222114/eb77888c-470d-4bcc-a87c-236ec8ceb1c1)
 
-
 ## Modelo de dominio
 ![DDD](https://github.com/andritowmega/Pwiwp/assets/104222114/a1d058c2-a283-4716-b5e8-6ce20c43c747)
 
-
 ## Arquitectura y patrones
+![image](https://github.com/andritowmega/Pwiwp/assets/104222114/0bcf9b7f-5b36-4c57-81a3-9463a5a2ee44)
 
-## Prácticas de codificación limpia aplicadas
+## Prácticas de codificación limpia aplicadas (CLEAN CODE)
+### 1. Comentarios
+#### Descripción
+* Intenta siempre explicarte en código.
+* No seas redundante.
+* No agregue ruido obvio.
+* No use comentarios de llaves de cierre.
+* No comente el código. Solo elimina.
+* Utilizar como explicación de la intención. 
+* Utilizar como aclaración de código.
+* Utilizar como advertencia de las consecuencias.
+#### Evidencia
 
-## Estilos de programación Aplicados
+### 2. Reglas de nombres
+#### Descripción
+* Elija nombres descriptivos e inequívocos.
+* Hacer una distinción significativa.
+* Usa nombres pronunciables.
+* Utilice nombres buscables.
+* Reemplace los números mágicos con constantes con nombre.
+* Evite las codificaciones. No agregue prefijos ni escriba información.
+#### Evidencia
 
-## Principios SOLID aplicados
+### 3. Consejos de comprensibilidad
+#### Despcripción 
+* Se consistente. Si haces algo de cierta manera, haz todas las cosas similares de la misma manera.
+* Usa variables explicativas.
+* Encapsular las condiciones de contorno. Las condiciones de contorno son difíciles de seguir. Ponga el procesamiento para ellos en un solo lugar.
+* Prefiere los objetos de valor dedicados al tipo primitivo.
+* Evita la dependencia lógica.
+* No escriba métodos que funcionen correctamente dependiendo de otra cosa en la misma clase.
+* Evita los condicionales negativos.
+#### Evidencia
 
-## Conceptos DDD aplicados
+### 4. Reglas de funciones
+#### Descripción
+* Pequeña.
+* Haz una cosa.
+* Utilice nombres descriptivos.
+* Prefiere menos argumentos.
+* No tiene efectos secundarios.
+* No use argumentos de bandera. Divida el método en varios métodos independientes que se pueden llamar desde el cliente sin la bandera.
+#### Evidencia
 
-# LAB 9: ESTILOS DE LA PROGRAMACIÓN
-Estilo 1 - Aspect: Descomponer el problema con formas de abstracción.
+### 5. Objetos y estructuras de datos (Por Implementar)
+#### Descripción
+* Ocultar estructura interna.
+* Preferir estructuras de datos.
+* Evita estructuras híbridas (mitad objeto y mitad datos).
+* Debería ser pequeño.
+* Haz una cosa.
+* Pequeño número de variables de instancia.
+* La clase base no debe saber nada acerca de sus derivados.
+* Es mejor tener muchas funciones que pasar algo de código a una función para seleccionar un comportamiento.
+* Prefiere métodos no estáticos a métodos estáticos.
+#### Evidencia
 
-```javascript
-class AutorService {
-  static async AccountProfile(data) {
-    const accountEntity = require("../entities/account.entity");
-    const userEntity = require("../entities/user.entity");
-
-    const userResponse = await userEntity.create(data).catch((e) => {
-      console.error("SERVICE ACCOUNT PROFILE: cant create account profile", e);
-      return null;
-    });
-    if (userResponse) {
-      data.user_id = userResponse.id;
-      const accountResponse = await accountEntity.create(data).catch((e) => {
-        console.error(
-          "SERVICE ACCOUNT PROFILE: cant create account profile",
-          e
-        );
-        return null;
+### 6. Capitalize SQL Special Words
+#### Descripción
+* La interacción con la base de datos es una parte importante de la mayoría de las aplicaciones web. Si está escribiendo consultas SQL sin procesar, es una buena idea mantenerlas legibles también.
+* Aunque las palabras especiales de SQL y los nombres de funciones no distinguen entre mayúsculas y minúsculas, es una práctica común usar mayúsculas para distinguirlos de los nombres de tablas y columnas.
+#### Evidencia
+``` javascript
+   async get() {
+      return new Promise(async (resolve, reject) => {
+        const connection = connectionDb();
+        const data = await connection
+          .query(
+            "SELECT * FROM iniciosesion"
+          )
+          .catch((err) => {
+            console.error("MODEL InicioSesion: Can not get", err);
+            return null;
+          });
+        connection.end();
+        if (data && data.rows && data.rows.length > 0)
+          return resolve(data.rows);
+        return reject(null);
       });
-      return accountResponse;
-    }
-    return null;
-  }
-  static async Login(data) {
-    const accountEntity = require("../entities/account.entity");
-    const accountResponse = await accountEntity
-      .getByEmail(data.email)
-      .catch((e) => {
-        console.error("SERVICE ACCOUNT LOGIN: cant find by email", e);
-        return null;
-      });
-    if (accountResponse && accountResponse.password) {
-      const auth = require("../../../utils/auth");
-      const ok = await auth.comparePassword(data.password, accountResponse.password);
-      if (ok) {
-        const newToken = await auth.newTokenUser(accountResponse);
-        accountResponse.token = newToken;
-        return accountResponse;
-      }
-      return null;
-    }
-    return null;
-  }
-  static async GetAllUsers() {
-    const accountEntity = require("../entities/account.entity");
-    const accountResponse = await accountEntity
-      .getAll()
-      .catch((e) => {
-        console.error("SERVICE ACCOUNT LOGIN: cant get all", e);
-        return null;
-      });
-    return accountResponse;
-  }
-  static async SearchUsersByName(data) {
-    const accountEntity = require("../entities/account.entity");
-    const accountResponse = await accountEntity
-      .searchUserByName(data)
-      .catch((e) => {
-        console.error("SERVICE ACCOUNT LOGIN: cant find users", e);
-        return null;
-      });
-    return accountResponse;
-  }
-  static async getByNickName(data) {
-    const accountEntity = require("../entities/account.entity");
-    const accountResponse = await accountEntity
-      .getByUserByNick(data)
-      .catch((e) => {
-        console.error("SERVICE ACCOUNT LOGIN: cant get by nickname", e);
-        return null;
-      });
-    return accountResponse;
-  }
-}
-
-module.exports = AutorService;
-
+    },
 ```
 
-Estilo 2 - Letterbox: De los problemas más grandes, descomponer a cosas de acuerdo al dominio
-
+## Estilos de programación Aplicados
+### 1. Letterbox
+#### Descripción
+* El problema más grande se descompone en 'cosas' que tienen sentido para el dominio del problema.
+* Cada 'cosa' es una cápsula de datos que expone un solo procedimiento, a saber, la capacidad de recibir y enviar mensajes que se le envían.
+* El envío de mensajes puede resultar en el envío del mensaje a otra cápsula.
+#### Evidencia
 ```javascript
 const connectionDb = require("../../../config/dbconnections");
 module.exports = {
@@ -211,8 +207,11 @@ module.exports = {
 
 ```
 
-Estilo 2 - Letterbox: verificar argumentos (datos de sesión correctos para continuar navegando en la plataforma)
-
+### 2. Tantrum
+#### Descripción
+* Cada procedimiento y función verifica la cordura de sus argumentos y se niega a continuar cuando los argumentos no son razonables.
+* Todos los bloques de código verifican todos los posibles errores, posiblemente imprimen mensajes específicos del contexto cuando ocurren errores y pasan los errores a la cadena de llamadas de función
+#### Evidencia
 ```javascript
 middlewareUser: async function (req, res, next) {
     //console.log("req.cookies",req.cookies)
@@ -248,18 +247,13 @@ middlewareUser: async function (req, res, next) {
   },
 ```
 
-# LAB 10: CLEAN CODE
-
-- Intenta siempre explicarte en código.
-- No seas redundante.
-- No agregue ruido obvio.
-- No use comentarios de llaves de cierre.
-- No comente el código. Solo elimina.
-- Capitalize SQL Special Words
-
+### 3. Aspects
+#### Descripción
+* El problema se descompone utilizando alguna forma de abstracción (procedimientos, funciones, objetos, etc.)
+* Los aspectos del problema se agregan al programa principal sin editar el código fuente de las abstracciones. Estas funciones secundarias se aferran a las abstracciones principales nombrándolas, como en "Soy un aspecto de foo (¡aunque puede que foo no lo sepa!)".
+#### Evidencia
 ```javascript
 class AutorService {
-  //obtener perfil y datos de usuario
   static async AccountProfile(data) {
     const accountEntity = require("../entities/account.entity");
     const userEntity = require("../entities/user.entity");
@@ -281,7 +275,6 @@ class AutorService {
     }
     return null;
   }
-  //iniciar sesión con email y password
   static async Login(data) {
     const accountEntity = require("../entities/account.entity");
     const accountResponse = await accountEntity
@@ -302,7 +295,6 @@ class AutorService {
     }
     return null;
   }
-  //obtener todos los usuarios
   static async GetAllUsers() {
     const accountEntity = require("../entities/account.entity");
     const accountResponse = await accountEntity
@@ -313,7 +305,6 @@ class AutorService {
       });
     return accountResponse;
   }
-  //buscar por nombre
   static async SearchUsersByName(data) {
     const accountEntity = require("../entities/account.entity");
     const accountResponse = await accountEntity
@@ -324,7 +315,6 @@ class AutorService {
       });
     return accountResponse;
   }
-  //buscar por nickname
   static async getByNickName(data) {
     const accountEntity = require("../entities/account.entity");
     const accountResponse = await accountEntity
@@ -339,108 +329,9 @@ class AutorService {
 
 module.exports = AutorService;
 
-
-const connectionDb = require("../../../config/dbconnections");
-module.exports = {
-  async create({ email, password, user_id, nickname }) {
-    return new Promise(async (resolve, reject) => {
-      const bcrypt = require("bcryptjs");
-      password = bcrypt.hashSync(password, 8);
-      const connection = connectionDb();
-      const data = await connection
-        .query(
-          "INSERT INTO account (email,password,user_id,nickname) VALUES ($1,$2,$3,$4) RETURNING *",
-          [email, password, user_id, nickname]
-        )
-        .catch((err) => {
-          console.error("MODEL Account: Can not create Account", err);
-          return null;
-        });
-      connection.end();
-      if (data && data.rows && data.rows.length > 0)
-        return resolve(data.rows[0]);
-      return reject(null);
-    });
-  },
-  async getByEmail(email) {
-    return new Promise(async (resolve, reject) => {
-      const connection = connectionDb();
-      const data = await connection
-        .query(
-          "SELECT a.email,a.password,a.user_id,a.nickname,u.firstname,u.lastname FROM account a INNER JOIN userinfo u ON a.user_id = u.id WHERE a.email = $1",[email]
-        )
-        .catch((err) => {
-          console.error("MODEL Account: Can not get By Email", err);
-          return null;
-        });
-      connection.end();
-      if (data && data.rows && data.rows.length > 0)
-        return resolve(data.rows[0]);
-      return reject(null);
-    });
-  },
-  async getAll(){
-    return new Promise(async (resolve, reject) => {
-      const connection = connectionDb();
-      const data = await connection
-        .query(
-          "SELECT a.email,a.nickname,u.* FROM account a INNER JOIN userinfo u ON a.user_id = u.id ORDER BY a.user_id DESC"
-        )
-        .catch((err) => {
-          console.error("MODEL Account: Can not get All Users", err);
-          return null;
-        });
-      connection.end();
-      if (data && data.rows && data.rows)
-        return resolve(data.rows);
-      return reject(null);
-    });
-  },
-  async searchUserByName({name}){
-    return new Promise(async (resolve, reject) => {
-      const connection = connectionDb();
-      const data = await connection
-        .query(
-          "SELECT u.*,a.email,a.nickname FROM userinfo u INNER JOIN account a ON u.id = a.user_id WHERE u.firstname LIKE $1",['%' + name + '%']
-        )
-        .catch((err) => {
-          console.error("MODEL Account: Can not get All Users", err);
-          return null;
-        });
-      connection.end();
-      if (data && data.rows && data.rows)
-        return resolve(data.rows);
-      return reject(null);
-    });
-  },
-  async getByUserByNick({nickname}) {
-    return new Promise(async (resolve, reject) => {
-      const connection = connectionDb();
-      const data = await connection
-        .query(
-          "SELECT a.email,a.nickname,u.* FROM account a INNER JOIN userinfo u ON a.user_id = u.id WHERE a.nickname=$1",[nickname]
-        )
-        .catch((err) => {
-          console.error("MODEL Account: Can not get By NickName", err);
-          return null;
-        });
-      connection.end();
-      if (data && data.rows && data.rows.length > 0)
-        return resolve(data.rows[0]);
-      return reject(null);
-    });
-  },
-};
-
-
 ```
 
+## Principios SOLID aplicados
 
+## Conceptos DDD aplicados
 
-# LAB 10: PRINCIPIOS SOLID
-
-- Interface segregation principle(ISP).
-
-```javascript
-
-```
