@@ -725,10 +725,10 @@ class MessageDomain {
 ## Conceptos DDD aplicados
 ![image](https://github.com/andritowmega/Pwiwp/assets/104222114/ee6b5c1c-3162-49dd-b95a-49e5cbc6366f)
 
-1. ### Entidades
+### 1. Entidades
 En las entidades se definen todos los modelos que el negocio necesita para representar. Las entidades son objetos con identidad única, que se mantiene en el tiempo y cuyos atributos no son su principal característica.
 
-2. ### Arquitectura en Capas
+### 2. Arquitectura en Capas
 * #### Vistas (Capa de Presentación):
 En esta capa, se encuentran las interfaces de usuario y prototipos que permiten a los usuarios interactuar con la red social. Las imágenes de los prototipos y los diagramas de casos de uso ayudan a visualizar cómo los usuarios pueden utilizar la aplicación y acceder a las funcionalidades proporcionadas por las capas subyacentes.
 
