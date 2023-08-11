@@ -406,6 +406,321 @@ module.exports = AutorService;
 ```
 
 ## Principios SOLID aplicados
+### 1. Principio de responsabilidad única (SPP)
+#### Descripción
+Si una clase tiene muchas responsabilidades, aumenta la posibilidad de errores porque hacer cambios en una de sus responsabilidades podría afectar a las otras sin que lo sepas.
+#### Evidencia
+```javascript
+class AutorController {
+  static async Index(req, res) {
+    res.render("autor/index", {my:req.datatoken});
+  }
+  static async Register(req, res) {
+    res.render("autor/register");
+  }
+  static async RegisterAccount(req, res) {
+    const AutorService = require("../services/autor.service");
+    const data = await AutorService.AccountProfile(req.body).catch((e) => {
+      console.error("USER CONTROLLER: cant not create user");
+      return null;
+    });
+    if (data) {
+      return res.json({
+        status: "ok",
+        msg: "Registro correcto. Redireccionando...",
+        data: null,
+      });
+    } else {
+      return res.json({
+        status: "error",
+        msg: "Error al registrarse, algún dato ya es repetido",
+        data: null,
+      });
+    }
+  }
+  static async Login(req, res) {
+    const AutorService = require("../services/autor.service");
+    const data = await AutorService.Login(req.body).catch((e) => {
+      console.error("USER CONTROLLER: cant not create user");
+      return null;
+    });
+    if (data) {
+      return res.json({
+        status: "ok",
+        msg: "Registro correcto. Redireccionando...",
+        data: {
+          token: data.token
+        },
+      });
+    } else {
+      return res.json({
+        status: "error",
+        msg: "Error al registrarse, algún dato ya es repetido",
+        data: null,
+      });
+    }
+  }
+  static async ViewGetAllUsers(req, res) {
+    const AutorService = require("../services/autor.service");
+    let data = null
+    if (req.query?.name !== ""){
+      data = await AutorService.SearchUsersByName(req.query).catch((e) => {
+        console.error("USER CONTROLLER: cant not find users");
+        return null;
+      });
+    } else{
+      data = await AutorService.GetAllUsers().catch((e) => {
+        console.error("USER CONTROLLER: cant not get all user");
+        return null;
+      });
+    }
+    if (data) {
+      return res.render("autor/users",{users:data,my:req.datatoken})
+    } else {
+      return res.render("autor/users",{users:null,my:req.datatoken})
+    }
+  }
+  static async ViewGetByNickname(req, res) {
+    const AutorService = require("../services/autor.service");
+    let data = null
+    if (req.params?.nickname){
+      data = await AutorService.getByNickName(req.params).catch((e) => {
+        console.error("USER CONTROLLER: cant not find users");
+        return null;
+      });
+    } else{
+      data = await AutorService.GetAllUsers().catch((e) => {
+        console.error("USER CONTROLLER: cant not get all user");
+        return null;
+      });
+    }
+    if (data) {
+      return res.render("autor/profile",{user:data,my:req.datatoken})
+    } else {
+      return res.render("autor/profile",{user:null,my:req.datatoken})
+    }
+  }
+}
+
+module.exports = AutorController;
+```
+
+### 2. Principio abierto/cerrado (OCP)
+#### Descripción
+El Principio Abierto/Cerrado, también conocido como Open/Closed Principle o por sus siglas OCP, es el segundo de los 5 principios SOLID de la programación orientada a objetos.
+Los módulos que cumplen con el principio abierto-cerrado tienen dos características principales. Estos son:
+* Abiertos para la extensión: Esto significa que el comportamiento del módulo puede ser extendido. Cuando los requerimientos de la aplicación cambian, debemos ser capaces de extender el módulo con estos nuevos comportamientos que satisfagan esos cambios. En otras palabras, debemos ser capaces de cambiar lo que el módulo hace.
+* Cerrado para la modificación: Esto significa que extender el comportamiento de un módulo no debería tener como resultado cambiar el código fuente, es decir, el código original debe permanecer sin cambios.
+#### Evidencia
+```javascript
+class FeedController {
+  static async PublishPublication(req, res) {
+    const FeetService = require("../services/feed.service");
+    req.body.id = req.datatoken.id;
+    const data = await FeetService.PublishPublication(req.body).catch((e) => {
+      console.error("Feed CONTROLLER: cant not publish");
+      return null;
+    });
+    if (data) {
+      return res.json({
+        status: "ok",
+        msg: "Post publicado",
+        data: data,
+      });
+    } else {
+      return res.json({
+        status: "error",
+        msg: "Error al publicar post",
+        data: null,
+      });
+    }
+  }
+  static async GetPublications(req, res) {
+    const FeedService = require("../services/feed.service");
+    const data = await FeedService.GetPosts().catch((e) => {
+      console.error("Feed CONTROLLER: cant not get");
+      return null;
+    });
+    if (data) {
+      return res.json({
+        status: "ok",
+        msg: "Todas las Publicaciones",
+        data: data,
+      });
+    }
+    return res.json({
+      status: "error",
+      msg: "Error al obtener publicaciones",
+      data: null,
+    });
+  }
+  static async GetSinglePublication(req, res) {
+    const FeedService = require("../services/feed.service");
+    const data = await FeedService.GetSinglePost(req.params).catch((e) => {
+      console.error("Feed CONTROLLER: cant not get");
+      return null;
+    });
+    if (data) {
+      return res.render("feed/singlePost",{post:data,my:req.datatoken})
+    }
+    return res.render("feed/singlePost",{post:null,my:req.datatoken})
+  }
+  static async GetPublicationsByUserId(req, res) {
+    const FeedService = require("../services/feed.service");
+    let data = null
+    if(req.params?.id){
+      data = await FeedService.GetPostsByUserId(req.params).catch((e) => {
+        console.error("Feed CONTROLLER: cant not get");
+        return null;
+      });
+    }else{
+      data = await FeedService.GetPostsByUserId(req.datatoken).catch((e) => {
+        console.error("Feed CONTROLLER: cant not get");
+        return null;
+      });
+    }
+    if (data) {
+      return res.json({
+        status: "ok",
+        msg: "Todas las Publicaciones",
+        data: data,
+      });
+    }
+    return res.json({
+      status: "error",
+      msg: "Error al obtener publicaciones",
+      data: null,
+    });
+  }
+  static async CreateComment(req, res) {
+    const FeedService = require("../services/feed.service");
+    req.body.user_id=req.datatoken.id;
+    const data = await FeedService.CreateComment(req.body).catch((e) => {
+      console.error("Feed CONTROLLER: cant not create comment");
+      return null;
+    });
+    if (data) {
+      return res.json({
+        status: "ok",
+        msg: "comentario creado",
+        data: null,
+      });
+    }
+    return res.json({
+      status: "error",
+      msg: "Error al crear comentario",
+      data: null,
+    });
+  }
+  static async GetCommentsByIdPost(req, res) {
+    const FeedService = require("../services/feed.service");
+    const data = await FeedService.GetCommentsByIdPost(req.params).catch((e) => {
+      console.error("Feed CONTROLLER: cant not create comment");
+      return null;
+    });
+    if (data) {
+      return res.json({
+        status: "ok",
+        msg: "Comentarios obtenidos",
+        data: data,
+      });
+    }
+    return res.json({
+      status: "error",
+      msg: "No se pudo obtener comentarios",
+      data: null,
+    });
+  }
+  static async CreateReaction(req, res) {
+    const FeedService = require("../services/feed.service");
+    req.body.user_id = req.datatoken.id;
+    const data = await FeedService.CreateReaction(req.body).catch((e) => {
+      console.error("Feed CONTROLLER: cant not create comment");
+      return null;
+    });
+    if (data) {
+      return res.json({
+        status: "ok",
+        msg: "Reacción creada",
+        data: null,
+      });
+    }
+    return res.json({
+      status: "error",
+      msg: "Error al crear reacción",
+      data: null,
+    });
+  }
+  static async GetReactions(req, res) {
+    const FeedService = require("../services/feed.service");
+    const data = await FeedService.GetReactionsById(req.params).catch((e) => {
+      console.error("Feed CONTROLLER: cant not get reactions");
+      return null;
+    });
+    if (data) {
+      return res.json({
+        status: "ok",
+        msg: "Se obtuvo reacciones",
+        data: data,
+        my: req.datatoken.id
+      });
+    }
+    return res.json({
+      status: "error",
+      msg: "Error al obtener reacciones",
+      data: null,
+    });
+  }
+  static async DeleteReactions(req, res) {
+    const FeedService = require("../services/feed.service");
+    req.params.user_id = req.datatoken.id;
+    const data = await FeedService.DeleteReactions(req.params).catch((e) => {
+      console.error("Feed CONTROLLER: cant not delete reactions");
+      return null;
+    });
+    if (data) {
+      return res.json({
+        status: "ok",
+        msg: "Se elimino",
+        data: null,
+      });
+    }
+    return res.json({
+      status: "error",
+      msg: "Error al eliminar",
+      data: null,
+    });
+  }
+}
+
+module.exports = FeedController;
+```
+
+### 3. Interface segregation principle (ISP)
+#### Descripción
+* No se debe obligar a los clientes a depender de métodos que no utilizan. Cuando se requiere que una Clase realice acciones que no son útiles, es un desperdicio y puede producir errores inesperados si la Clase no tiene la capacidad de realizar esas acciones.
+* Una clase debe realizar solo las acciones necesarias para cumplir su función. Cualquier otra acción debe eliminarse por completo o moverse a otro lugar si otra Clase podría usarla en el futuro.
+#### Evidencia
+```javascript
+class MessageDomain {
+    static async createMessage(data) {
+        const messageEntity = require("../entities/message.entity");
+        const messageResponse = await messageEntity.create(data).catch((e) => {
+            console.error("SERVICE MESSAGE SYSTEM: can not regist message", e);
+            return null;
+        });
+        return messageResponse;
+    }
+    static async getMessage(data) {
+        const messageEntity = require("../entities/message.entity");
+        const messageResponse = await messageEntity.getMessagesByChatId(data).catch((e) => {
+            console.error("SERVICE MESSAGE SYSTEM: can not regist message", e);
+            return null;
+        });
+        return messageResponse;
+    }
+}
+```
 
 ## Conceptos DDD aplicados
 
