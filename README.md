@@ -7,6 +7,10 @@ de mejorar la libertad de expresión y la libertad de información. Ello implica
 usuarios puedan compartir información al momento en una época donde las personas
 necesitamos interconexión al instante.
 
+## Trello
+ [Tablero Trello](https://trello.com/invite/b/niJLByP0/ATTI9e7870e3d9960cbf216433993eeebb357FFF3A43/pwiwp-tablero)
+
+
 ## Funcionalidades
 ### Diagrama de Casos de Uso
 ![image](https://github.com/andritowmega/Pwiwp/assets/104222114/f6b442f2-efbc-40b7-a34d-80dbe07ffca2)
