@@ -24,17 +24,28 @@ Algunas imágenes de los prototipos iniciales, que al final tuvieron que cambiar
 ![image](https://github.com/andritowmega/Pwiwp/assets/104222114/0bcf9b7f-5b36-4c57-81a3-9463a5a2ee44)
 
 ## Prácticas de codificación limpia aplicadas (CLEAN CODE)
-### 1. Comentarios
+### 1. Deep nesting
 #### Descripción
-* Intenta siempre explicarte en código.
-* No seas redundante.
-* No agregue ruido obvio.
-* No use comentarios de llaves de cierre.
-* No comente el código. Solo elimina.
-* Utilizar como explicación de la intención. 
-* Utilizar como aclaración de código.
-* Utilizar como advertencia de las consecuencias.
+A veces usamos bucles anidados que son difíciles de entender. La forma de manejar eso es extraer todos los bucles en funciones separadas.
 #### Evidencia
+``` javascript
+try {
+      const data = await connection.query(
+        "INSERT INTO message (content, chatid, userid) VALUES ($1, $2, $3) RETURNING *",
+        [content, chatid, userid]
+      );
+
+      connection.end();
+      if (data?.rows?.length > 0) {
+        return data.rows[0];
+      } 
+      return null;
+    } catch (err) {
+      console.error("MODEL message: Can not create message", err);
+      connection.end();
+      return null;
+    }
+```
 
 ### 2. Reglas de nombres
 #### Descripción
@@ -45,6 +56,25 @@ Algunas imágenes de los prototipos iniciales, que al final tuvieron que cambiar
 * Reemplace los números mágicos con constantes con nombre.
 * Evite las codificaciones. No agregue prefijos ni escriba información.
 #### Evidencia
+``` javascript
+async getByIdPost({ id }) {
+    const connection = connectionDb();
+
+    try {
+      const data = await connection.query(
+        "SELECT * FROM reaction WHERE idpublication = $1",
+        [id]
+      );
+
+      connection.end();
+      return data?.rows || null;
+    } catch (err) {
+      console.error("MODEL Reaction: Can not get Reactions By Post Id", err);
+      connection.end();
+      return null;
+    }
+  },
+```
 
 ### 3. Consejos de comprensibilidad
 #### Despcripción 
@@ -56,6 +86,23 @@ Algunas imágenes de los prototipos iniciales, que al final tuvieron que cambiar
 * No escriba métodos que funcionen correctamente dependiendo de otra cosa en la misma clase.
 * Evita los condicionales negativos.
 #### Evidencia
+``` javascript
+router.post(
+  "/api/publication/push",
+  auth.middlewareUserApi,
+  FeedController.PublishPublication
+);
+router.post(
+  "/api/publication/getall",
+  auth.middlewareUserApi,
+  FeedController.GetPublications
+);
+router.post(
+  "/api/my/publication/getall",
+  auth.middlewareUserApi,
+  FeedController.GetPublicationsByUserId
+);
+```
 
 ### 4. Reglas de funciones
 #### Descripción
@@ -66,6 +113,13 @@ Algunas imágenes de los prototipos iniciales, que al final tuvieron que cambiar
 * No tiene efectos secundarios.
 * No use argumentos de bandera. Divida el método en varios métodos independientes que se pueden llamar desde el cliente sin la bandera.
 #### Evidencia
+``` javascript
+function closeSession() {
+  let path = "/";
+  easyFetch.setCookie("dpwi", "", (path));
+  location.replace("/");
+}
+```
 
 ### 5. Objetos y estructuras de datos (Por Implementar)
 #### Descripción
@@ -79,6 +133,26 @@ Algunas imágenes de los prototipos iniciales, que al final tuvieron que cambiar
 * Es mejor tener muchas funciones que pasar algo de código a una función para seleccionar un comportamiento.
 * Prefiere métodos no estáticos a métodos estáticos.
 #### Evidencia
+``` javascript
+class MessageDomain {
+    static async createMessage(data) {
+        const messageEntity = require("../entities/message.entity");
+        const messageResponse = await messageEntity.create(data).catch((e) => {
+            console.error("SERVICE MESSAGE SYSTEM: can not regist message", e);
+            return null;
+        });
+        return messageResponse;
+    }
+    static async getMessage(data) {
+        const messageEntity = require("../entities/message.entity");
+        const messageResponse = await messageEntity.getMessagesByChatId(data).catch((e) => {
+            console.error("SERVICE MESSAGE SYSTEM: can not regist message", e);
+            return null;
+        });
+        return messageResponse;
+    }
+}
+```
 
 ### 6. Capitalize SQL Special Words
 #### Descripción
